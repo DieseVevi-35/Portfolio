@@ -61,15 +61,3 @@
   renderCategory(categories[initial] ? initial : "fussball");
 })();
 
-// ===================== Footer (footer.html) =====================
-fetch("footer.html")
-  .then((response) => response.text())
-  .then((html) => {
-    const footerContainer = document.getElementById("footer");
-    if (footerContainer) {
-      footerContainer.innerHTML = html;
-    }
-  })
-  .catch((error) => {
-    console.error("Fehler beim Laden des Footers:", error);
-  });
