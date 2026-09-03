@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kassenbuch-Webanwendung — Portfolio Vevi</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<meta name="description" content="Case Study: UX-Design für eine Kassenbuch-Webanwendung, Praxissemester bei einem IT-Dienstleister für digitale Produkte.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="container">
+    <div class="logo">
+      <a href="/">
+      <img src="Bilder_pdfs\favicon.png" alt="Logo" class="logo-img">
+      </a>
+    </div>
+    <button class="nav-toggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navLinks" id="navToggle">
+      <span></span><span></span><span></span>
+    </button>
+    <nav>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#about-me">Über mich</a></li>
+        <li class="nav-dropdown">
+          <button type="button" class="nav-dropdown-trigger active" aria-haspopup="true" aria-expanded="false" aria-controls="dropdownProjekte">
+            Projekte
+            <svg class="dropdown-arrow" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" id="dropdownProjekte">
+            <li><a href="studentische-projekte.html">Studentische</a></li>
+            <li><a href="private-projekte.html">Private</a></li>
+            <li><a href="arbeit-projekte.html" class="active" aria-current="page">Arbeit</a></li>
+          </ul>
+        </li>
+        <li><a href="fotografie.html">Fotografie</a></li>
+        <li><a href="contact.html">Kontakt</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="page-header">
+  <div class="container">
+    <span class="breadcrumb"><a href="arbeit-projekte.html">Arbeit</a> / Kassenbuch-Webanwendung</span>
+    <h1>Kassenbuch-Webanwendung für Schulen</h1>
+    <p>Praxissemester bei einem IT-Dienstleister für digitale Produkte, 09/2025–01/2026. Aus vertraglichen Gründen ohne Firmen-, Kunden- oder Produktnamen sowie ohne Original-Screenshots dargestellt.</p>
+  </div>
+</section>
+
+<section class="section-light">
+  <div class="detail-container" style="padding-top:48px; padding-bottom:64px;">
+
+    <div class="hero-meta" style="margin-bottom:36px;">
+      <span class="meta-pill">Rolle: UX Design (Praktikum → Werkstudentin)</span>
+      <span class="meta-pill">Team: 5 Personen (PM, 2× Frontend, Backend, UX)</span>
+      <span class="meta-pill">Tools: Figma, Asana, Illustrator</span>
+    </div>
+
+    <div class="placeholder ph-wide" style="margin: 0 auto 40px;">Original-Screens unterliegen der NDA</div>
+
+    <div class="project-text">
+      <h2>Ausgangslage</h2>
+      <p>Schulen einer Stadtverwaltung arbeiteten seit Jahren mit einer veralteten Kassenbuch-Software, die nicht mehr aktualisiert wurde. Das führte zu zwei Problemen gleichzeitig: wachsende Sicherheitsrisiken und die fehlende Fähigkeit, eine neue gesetzliche Vorgabe zur Umsatzsteuervoranmeldung umzusetzen, die ab 2027 für Bildungseinrichtungen verpflichtend wird. Eine neue Webanwendung musste beides lösen – und gleichzeitig für Sekretärinnen im stressigen Schulalltag intuitiv bedienbar bleiben.</p>
+
+      <h2>Prozess &amp; Methoden</h2>
+      <p>Das Team arbeitete iterativ: User-Storys wurden gemeinsam mit den Kund*innen abgestimmt und in Asana festgehalten, bevor einzelne Screens entstanden. Für die Screendesigns kam Atomic Design zum Einsatz – vom kleinsten Baustein (Icons, Inputs) über Moleküle und Organismen bis zu vollständigen Templates, aufgebaut auf einer gemeinsamen Figma-Bibliothek. Komplexe Formulare wurden bewusst in einzelne Schritte mit Zwischenvalidierung aufgeteilt, um Nutzer*innen nicht zu überfordern und den Datenaustausch mit dem Backend gering zu halten. Fertige Screens durchliefen wöchentliche Feedback-Runden mit dem Team und den Kund*innen, bevor sie ans Frontend übergeben wurden. In der Pilotphase folgten User-Acceptance-Tests nach dem Prinzip „Thinking-Out-Loud", remote mit echten Sekretärinnen der Pilotschulen.</p>
+
+      <h2>Mein Beitrag</h2>
+      <p>Ich habe eigenständig Screendesigns und Prototypen für zugewiesene User-Storys in Figma umgesetzt und dabei mein Fachwissen aus einer vorherigen Ausbildung im steuerlichen Bereich aktiv in die Definition der User-Storys eingebracht. Zusätzlich habe ich das Logo der Anwendung in drei Varianten (Bildmarke, Wortmarke, Wort-Bild-Marke) final in Adobe Illustrator ausgearbeitet, inklusive Abstandsrichtlinien. Während der Pilotphase habe ich die User-Acceptance-Tests mitbetreut, das Verhalten und die Kommentare der Testnutzer*innen dokumentiert und die Ergebnisse zu einer Fehler- und Frustrations-Übersicht für das Team zusammengefasst.</p>
+
+      <h2>Ergebnis</h2>
+      <p>Die Anwendung ging trotz engem Zeitplan und kurzfristiger Anforderungsänderungen fristgerecht in Produktion. Die Rückmeldungen aus den Nutzertests waren durchgehend positiv – das neue System wurde von den Testerinnen als deutlich intuitiver und leistungsfähiger als die bisherige Lösung wahrgenommen. Im Anschluss an das Praktikum wurde mir eine Weiterbeschäftigung als Werkstudentin angeboten, in der ich am selben Projekt weiterarbeite.</p>
+    </div>
+
+    <a class="back-link" href="arbeit-projekte.html">← Zurück zur Übersicht</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <h2>Kontakt</h2>
+    <div class="contact-grid">
+      <div class="item"><span class="label">Mail</span><a href="mailto:verena@itsvevi.de">verena(at)itsvevi.de</a></div>
+      <div class="item"><span class="label">Telefon</span>+49 1515 3970123</div>
+      <div class="item"><span class="label">Adresse</span>Hauptstraße 21b, 85120 Hepberg</div>
+      <div class="item"><span class="label">LinkedIn</span><a href="https://www.linkedin.com/in/verena-o-879771339" target="_blank" rel="noopener">Verena Ostermeier</a></div>
+    </div>
+    <div class="footer-bottom">© Verena Ostermeier | 2026</div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
