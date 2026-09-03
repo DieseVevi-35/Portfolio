@@ -24,8 +24,19 @@
     <nav>
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html#about-me">Über mich</a></li>
-        <li><a href="studentische-projekte.html">Studentische Projekte</a></li>
-        <li><a href="private-projekte.html" class="active" aria-current="page">Private Projekte</a></li>
+        <li class="nav-dropdown">
+          <button type="button" class="nav-dropdown-trigger active" aria-haspopup="true" aria-expanded="false" aria-controls="dropdownProjekte">
+            Projekte
+            <svg class="dropdown-arrow" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M2 4L6 8L10 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <ul class="dropdown-menu" id="dropdownProjekte">
+            <li><a href="studentische-projekte.html">Studentische</a></li>
+            <li><a href="private-projekte.html" class="active" aria-current="page">Private</a></li>
+            <li><a href="arbeit-projekte.html">Arbeit</a></li>
+          </ul>
+        </li>
         <li><a href="fotografie.html">Fotografie</a></li>
         <li><a href="contact.html">Kontakt</a></li>
       </ul>

@@ -17,6 +17,42 @@
   });
 })();
 
+// ===================== Projekte-Dropdown =====================
+(function () {
+  const dropdown = document.querySelector(".nav-dropdown");
+  if (!dropdown) return;
+
+  const trigger = dropdown.querySelector(".nav-dropdown-trigger");
+  const menu = dropdown.querySelector(".dropdown-menu");
+
+  function isMobile() {
+    return window.matchMedia("(max-width: 860px)").matches;
+  }
+
+  trigger.addEventListener("click", function (e) {
+    if (!isMobile()) return; // Desktop: Hover übernimmt das Öffnen
+    e.preventDefault();
+    const isOpen = dropdown.classList.toggle("open");
+    trigger.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  // Schließt das Dropdown bei Klick außerhalb (nur mobile relevant)
+  document.addEventListener("click", function (e) {
+    if (isMobile() && !dropdown.contains(e.target) && dropdown.classList.contains("open")) {
+      dropdown.classList.remove("open");
+      trigger.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  // Dropdown + mobiles Hauptmenü schließen, wenn ein Unterpunkt geklickt wird
+  menu.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", function () {
+      dropdown.classList.remove("open");
+      trigger.setAttribute("aria-expanded", "false");
+    });
+  });
+})();
+
 // ===================== Galerie-Filter (gallery.html) =====================
 (function () {
   const grid = document.getElementById("galleryGrid");
