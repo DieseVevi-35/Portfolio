@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF-Viewer</title>
+<style>
+  :root {
+    --navy: #1d3a52;
+    --lightblue: #aac7da;
+    --bg: #eef1f4;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  #toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--navy);
+    color: #fff;
+    font-size: 14px;
+  }
+  #status { opacity: .9; }
+  #downloadLink {
+    color: var(--lightblue);
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  #downloadLink:hover { text-decoration: underline; }
+  #pages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 8px 32px;
+  }
+  .pdf-page-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    min-height: 240px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pdf-page-wrap canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .page-loading {
+    color: #7c8b98;
+    font-size: 13px;
+  }
+  #error {
+    display: none;
+    padding: 32px 20px;
+    text-align: center;
+    color: #7a2116;
+  }
+  #error a { color: var(--navy); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div id="toolbar">
+  <span id="status">PDF wird geladen …</span>
+  <a id="downloadLink" href="#" download>⬇ PDF herunterladen</a>
+</div>
+
+<div id="pages"></div>
+
+<div id="error">
+  <p>Die PDF-Vorschau konnte nicht geladen werden.</p>
+  <p><a id="errorLink" href="#">PDF direkt öffnen</a></p>
+</div>
+
+<script type="module">
+  import * as pdfjsLib from '/pdfjs/pdf.min.mjs';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdfjs/pdf.worker.min.mjs';
+
+  const params = new URLSearchParams(location.search);
+  const file = params.get('file');
+  const title = params.get('title') || 'PDF';
+  document.title = title;
+
+  const statusEl = document.getElementById('status');
+  const pagesEl = document.getElementById('pages');
+  const downloadLink = document.getElementById('downloadLink');
+  const errorEl = document.getElementById('error');
+  const errorLink = document.getElementById('errorLink');
+
+  function showError() {
+    statusEl.textContent = '';
+    errorEl.style.display = 'block';
+  }
+
+  if (!file) {
+    statusEl.textContent = 'Keine PDF-Datei angegeben.';
+  } else {
+    downloadLink.href = file;
+    errorLink.href = file;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+    const renderTasks = new Map();
+
+    async function renderPage(pdf, pageNum, wrap) {
+      if (renderTasks.has(pageNum)) return;
+      renderTasks.set(pageNum, true);
+      try {
+        const page = await pdf.getPage(pageNum);
+        const baseViewport = page.getViewport({ scale: 1 });
+        const targetWidth = wrap.clientWidth || 900;
+        const scale = (targetWidth / baseViewport.width) * dpr;
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.ceil(viewport.width);
+        canvas.height = Math.ceil(viewport.height);
+        wrap.innerHTML = '';
+        wrap.appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+        await page.render({ canvasContext: ctx, viewport }).promise;
+      } catch (err) {
+        console.error('Seite konnte nicht gerendert werden', pageNum, err);
+        renderTasks.delete(pageNum);
+      }
+    }
+
+    (async () => {
+      try {
+        const loadingTask = pdfjsLib.getDocument(file);
+        loadingTask.onProgress = (p) => {
+          if (p.total) {
+            const pct = Math.round((p.loaded / p.total) * 100);
+            statusEl.textContent = `PDF wird geladen … ${pct}%`;
+          }
+        };
+        const pdf = await loadingTask.promise;
+        statusEl.textContent = `${pdf.numPages} Seiten`;
+
+        const wraps = [];
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const wrap = document.createElement('div');
+          wrap.className = 'pdf-page-wrap';
+          wrap.dataset.pageNumber = String(i);
+          wrap.innerHTML = '<span class="page-loading">Seite ' + i + ' …</span>';
+          pagesEl.appendChild(wrap);
+          wraps.push(wrap);
+        }
+
+        await renderPage(pdf, 1, wraps[0]);
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              const num = Number(entry.target.dataset.pageNumber);
+              renderPage(pdf, num, entry.target);
+            }
+          });
+        }, { rootMargin: '600px 0px' });
+
+        wraps.forEach((wrap) => observer.observe(wrap));
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(() => {
+            renderTasks.clear();
+            wraps.forEach((wrap) => {
+              const num = Number(wrap.dataset.pageNumber);
+              const rect = wrap.getBoundingClientRect();
+              const inView = rect.bottom > -600 && rect.top < window.innerHeight + 600;
+              if (inView) renderPage(pdf, num, wrap);
+            });
+          }, 300);
+        });
+      } catch (err) {
+        console.error(err);
+        showError();
+      }
+    })();
+  }
+</script>
+</body>
+</html>
